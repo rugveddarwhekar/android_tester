@@ -1,0 +1,9 @@
+{
+    "platformName": "Android",
+    "appium:automationName": "UiAutomator2",
+    "appium:deviceName": "YOUR_DEVICE_ID",
+    "appium:appPackage": "YOUR_APP_PACKAGE",
+    "appium:appActivity": "YOUR_APP_ACTIVITY",
+    "appium:noReset": true,
+    "appium:newCommandTimeout": 3600
+} 

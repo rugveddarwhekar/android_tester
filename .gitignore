@@ -1,6 +1,24 @@
 # Python bytecode and cache
 __pycache__/
 *.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
 
 # Configuration overrides or sensitive info (if any later)
 # config/local_*.json
@@ -17,4 +35,30 @@ reports/
 
 # Virtual environment folder
 venv/
-*venv/
+ENV/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Project specific
+*.log
+reports/*
+!reports/.gitkeep
+data/test_cases/*
+!data/test_cases/.gitkeep
+
+# Sensitive data
+config/capabilities.json
+*.pem
+*.key
+*.cert
+.env
+.env.*
+!.env.example
+
+# Device specific
+*.device
+device_info.json
