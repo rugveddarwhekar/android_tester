@@ -2,8 +2,8 @@
     "platformName": "Android",
     "appium:automationName": "UiAutomator2",
     "appium:deviceName": "45181JEBF00447",
-    "appium:appPackage": "com.google.android.GoogleCamera",
-    "appium:appActivity": "com.android.camera.CameraLauncher",
+    "appium:appPackage": null,
+    "appium:appActivity": null,
     "appium:noReset": true,
     "appium:newCommandTimeout": 3600
 }

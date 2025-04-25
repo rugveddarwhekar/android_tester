@@ -2,15 +2,14 @@
 import sys
 import os
 
-# Add project root to Python path to allow imports between modules
+# Setup project root for module imports
 project_root = os.path.dirname(__file__)
 sys.path.insert(0, project_root)
 
-from gui.main_window import App # Import the main App class
+from gui.main_window import App
 
 def launch_gui():
-    """Launches the main Tkinter GUI application."""
-    print("Launching Android GUI Tester...")
+    """Initialize and run the main application window"""
     try:
         app = App()
         app.mainloop()
