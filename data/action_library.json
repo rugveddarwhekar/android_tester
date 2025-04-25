@@ -1,0 +1,346 @@
+[
+    
+    {
+      "display_name": "Launch/Switch App by Package",
+      "action_id": "launch_app_by_package",
+      "module": "actions.common_actions",
+      "description": "Launches app or brings it to foreground using package name.",
+      "params": [
+        {"name": "package_name", "label": "Package:", "type": "string", "required": true},
+        {"name": "activity_name", "label": "Activity (Optional):", "type": "string", "required": false, "description": "Usually not needed for launch/switch"}
+      ]
+    },
+    {
+      "display_name": "Close App",
+      "action_id": "close_app",
+      "module": "actions.common_actions",
+      "description": "Closes the specified application.",
+      "params": [
+        {"name": "package_name", "label": "Package:", "type": "string", "required": true}
+      ]
+    },
+    {
+      "display_name": "Install App",
+      "action_id": "install_app",
+      "module": "actions.common_actions",
+      "description": "Installs an app from a given file path.",
+      "params": [
+          {"name": "app_path", "label": "APK Path:", "type": "filepath", "required": true, "description": "Full path to the .apk file"}
+      ]
+    },
+    {
+      "display_name": "Uninstall App",
+      "action_id": "uninstall_app",
+      "module": "actions.common_actions",
+      "description": "Uninstalls the specified application.",
+      "params": [
+          {"name": "package_name", "label": "Package:", "type": "string", "required": true}
+      ]
+    },
+    {
+      "display_name": "Clear App Data",
+      "action_id": "clear_app_data",
+      "module": "actions.common_actions",
+      "description": "Clears user data for the specified application (requires adb/root?).",
+      "params": [
+        {"name": "package_name", "label": "Package:", "type": "string", "required": true}
+      ]
+    },
+  
+    {
+      "display_name": "Click Element",
+      "action_id": "click_element",
+      "module": "actions.common_actions",
+      "description": "Clicks a UI element.",
+      "params": [
+        {"name": "selector_type", "label": "Select By:", "type": "choice", "options": ["ACCESSIBILITY_ID", "ID", "XPATH", "CLASS_NAME", "TEXT", "UIAUTOMATOR"], "required": true},
+        {"name": "selector_value", "label": "Selector Value:", "type": "string", "required": true},
+        {"name": "timeout", "label": "Timeout (s):", "type": "integer", "default": 10, "required": false}
+      ]
+    },
+    {
+      "display_name": "Long Click/Press Element",
+      "action_id": "long_click_element",
+      "module": "actions.common_actions",
+      "description": "Performs a long press on a UI element.",
+      "params": [
+        {"name": "selector_type", "label": "Select By:", "type": "choice", "options": ["ACCESSIBILITY_ID", "ID", "XPATH", "CLASS_NAME", "TEXT", "UIAUTOMATOR"], "required": true},
+        {"name": "selector_value", "label": "Selector Value:", "type": "string", "required": true},
+        {"name": "duration_ms", "label": "Duration (ms):", "type": "integer", "default": 1000, "required": false},
+        {"name": "timeout", "label": "Find Timeout (s):", "type": "integer", "default": 10, "required": false}
+      ]
+    },
+    {
+      "display_name": "Input Text",
+      "action_id": "input_text",
+      "module": "actions.common_actions",
+      "description": "Inputs text into an element (clears first by default).",
+      "params": [
+        {"name": "selector_type", "label": "Select By:", "type": "choice", "options": ["ACCESSIBILITY_ID", "ID", "XPATH", "CLASS_NAME", "UIAUTOMATOR"], "required": true},
+        {"name": "selector_value", "label": "Selector Value:", "type": "string", "required": true},
+        {"name": "text_to_input", "label": "Text:", "type": "string", "required": true},
+        {"name": "clear_first", "label": "Clear Before Input?", "type": "boolean", "default": true, "required": false},
+        {"name": "timeout", "label": "Find Timeout (s):", "type": "integer", "default": 10, "required": false}
+      ]
+    },
+    {
+      "display_name": "Clear Text Input",
+      "action_id": "clear_text_input",
+      "module": "actions.common_actions",
+      "description": "Clears text from an input element.",
+      "params": [
+        {"name": "selector_type", "label": "Select By:", "type": "choice", "options": ["ACCESSIBILITY_ID", "ID", "XPATH", "CLASS_NAME", "UIAUTOMATOR"], "required": true},
+        {"name": "selector_value", "label": "Selector Value:", "type": "string", "required": true},
+        {"name": "timeout", "label": "Find Timeout (s):", "type": "integer", "default": 10, "required": false}
+      ]
+    },
+    {
+      "display_name": "Get Element Text",
+      "action_id": "get_element_text",
+      "module": "actions.common_actions",
+      "description": "Retrieves the text content of an element.",
+      "params": [
+        {"name": "selector_type", "label": "Select By:", "type": "choice", "options": ["ACCESSIBILITY_ID", "ID", "XPATH", "CLASS_NAME", "TEXT", "UIAUTOMATOR"], "required": true},
+        {"name": "selector_value", "label": "Selector Value:", "type": "string", "required": true},
+        {"name": "timeout", "label": "Find Timeout (s):", "type": "integer", "default": 10, "required": false}
+      ],
+      "returns": "string (The element's text)"
+    },
+     {
+      "display_name": "Get Element Attribute",
+      "action_id": "get_element_attribute",
+      "module": "actions.common_actions",
+      "description": "Retrieves the value of a specific attribute (e.g., 'checked', 'enabled', 'content-desc').",
+      "params": [
+        {"name": "selector_type", "label": "Select By:", "type": "choice", "options": ["ACCESSIBILITY_ID", "ID", "XPATH", "CLASS_NAME", "TEXT", "UIAUTOMATOR"], "required": true},
+        {"name": "selector_value", "label": "Selector Value:", "type": "string", "required": true},
+        {"name": "attribute_name", "label": "Attribute Name:", "type": "string", "required": true, "description": "e.g., checked, selected, enabled, content-desc, resource-id"},
+        {"name": "timeout", "label": "Find Timeout (s):", "type": "integer", "default": 10, "required": false}
+      ],
+      "returns": "string (The attribute's value)"
+    },
+  
+    {
+      "display_name": "Swipe Screen",
+      "action_id": "swipe_screen",
+      "module": "actions.common_actions",
+      "description": "Swipes the screen (Up, Down, Left, Right) - uses percentages.",
+      "params": [
+        {"name": "direction", "label": "Direction:", "type": "choice", "options": ["UP", "DOWN", "LEFT", "RIGHT"], "required": true},
+        {"name": "percent", "label": "Swipe %:", "type": "integer", "default": 75, "required": false, "description": "Percentage of screen dimension to swipe"},
+        {"name": "duration_ms", "label": "Duration (ms):", "type": "integer", "default": 400, "required": false}
+      ]
+    },
+    {
+      "display_name": "Swipe On Element",
+      "action_id": "swipe_on_element",
+      "module": "actions.common_actions",
+      "description": "Swipes starting from the center of an element.",
+      "params": [
+        {"name": "selector_type", "label": "Select By:", "type": "choice", "options": ["ACCESSIBILITY_ID", "ID", "XPATH", "CLASS_NAME", "TEXT", "UIAUTOMATOR"], "required": true},
+        {"name": "selector_value", "label": "Selector Value:", "type": "string", "required": true},
+        {"name": "direction", "label": "Direction:", "type": "choice", "options": ["UP", "DOWN", "LEFT", "RIGHT"], "required": true},
+        {"name": "percent", "label": "Swipe %:", "type": "integer", "default": 75, "required": false, "description": "Percentage of screen dimension to swipe relative to element"},
+        {"name": "duration_ms", "label": "Duration (ms):", "type": "integer", "default": 400, "required": false},
+        {"name": "timeout", "label": "Find Timeout (s):", "type": "integer", "default": 10, "required": false}
+      ]
+    },
+     {
+      "display_name": "Scroll To Element (Experimental)",
+      "action_id": "scroll_to_element",
+      "module": "actions.common_actions",
+      "description": "Attempts to scroll until an element is visible (uses UiScrollable).",
+      "params": [
+        {"name": "target_selector_type", "label": "Target Select By:", "type": "choice", "options": ["ACCESSIBILITY_ID", "TEXT", "ID", "CLASS_NAME"], "required": true, "description":"Selector for the element to find"},
+        {"name": "target_selector_value", "label": "Target Selector Value:", "type": "string", "required": true},
+        {"name": "scrollable_selector_type", "label": "Scroll Container Select By:", "type": "choice", "options": ["CLASS_NAME", "ID", "XPATH", "UIAUTOMATOR"], "required": false, "description": "Selector for the scrollable container (optional, defaults to common types like ScrollView)"},
+        {"name": "scrollable_selector_value", "label": "Scroll Container Selector:", "type": "string", "required": false},
+        {"name": "direction", "label": "Scroll Direction:", "type": "choice", "options": ["VERTICAL", "HORIZONTAL"], "default": "VERTICAL", "required": false},
+        {"name": "max_swipes", "label": "Max Swipes:", "type": "integer", "default": 5, "required": false}
+      ]
+    },
+    {
+      "display_name": "Pinch / Zoom (Experimental)",
+      "action_id": "pinch_zoom",
+      "module": "actions.common_actions",
+      "description": "Performs a pinch (zoom out) or zoom (pinch open) gesture.",
+      "params": [
+        {"name": "percent", "label": "Percent:", "type": "integer", "default": 200, "required": true, "description": ">100 for Zoom In, <100 for Zoom Out"},
+        {"name": "steps", "label": "Steps:", "type": "integer", "default": 50, "required": false, "description": "Number of steps for the gesture"}
+      ]
+    },
+  
+     {
+      "display_name": "Press Android Key",
+      "action_id": "press_android_key",
+      "module": "actions.common_actions",
+      "description": "Presses BACK, HOME, ENTER, VOLUME_UP/DOWN etc.",
+      "params": [
+        {"name": "key_code_name", "label": "Key Name:", "type": "choice", "options": ["BACK", "HOME", "ENTER", "SEARCH", "DPAD_UP", "DPAD_DOWN", "DPAD_LEFT", "DPAD_RIGHT", "DPAD_CENTER", "VOLUME_UP", "VOLUME_DOWN", "POWER", "CAMERA", "MENU"], "required": true}
+      ]
+    },
+    {
+      "display_name": "Hide Keyboard",
+      "action_id": "hide_keyboard",
+      "module": "actions.common_actions",
+      "description": "Attempts to hide the software keyboard.",
+      "params": []
+    },
+     {
+      "display_name": "Open Notifications",
+      "action_id": "open_notifications",
+      "module": "actions.common_actions",
+      "description": "Opens the Android notification shade.",
+      "params": []
+    },
+    {
+      "display_name": "Open Quick Settings",
+      "action_id": "open_quick_settings",
+      "module": "actions.common_actions",
+      "description": "Opens the Android quick settings panel (may require swipe down twice).",
+      "params": []
+    },
+    {
+      "display_name": "Lock Device",
+      "action_id": "lock_device",
+      "module": "actions.common_actions",
+      "description": "Locks the device screen.",
+      "params": [
+          {"name": "seconds", "label": "Lock for (s):", "type": "integer", "default": 0, "required": false, "description": "0 or negative means lock indefinitely"}
+      ]
+    },
+    {
+      "display_name": "Unlock Device",
+      "action_id": "unlock_device",
+      "module": "actions.common_actions",
+      "description": "Attempts to unlock the device (may only work if no secure lock screen).",
+      "params": []
+    },
+    {
+      "display_name": "Set Device Rotation",
+      "action_id": "set_rotation",
+      "module": "actions.common_actions",
+      "description": "Sets the device screen orientation.",
+      "params": [
+          {"name": "orientation", "label": "Orientation:", "type": "choice", "options": ["PORTRAIT", "LANDSCAPE"], "required": true}
+      ]
+    },
+    {
+      "display_name": "Shake Device (Emulator Only)",
+      "action_id": "shake_device",
+      "module": "actions.common_actions",
+      "description": "Simulates shaking the device (emulator feature).",
+      "params": []
+    },
+     {
+      "display_name": "Fingerprint Auth Simulation (Emulator Only)",
+      "action_id": "fingerprint_auth",
+      "module": "actions.common_actions",
+      "description": "Simulates successful fingerprint auth (requires emulator setup).",
+      "params": [
+           {"name": "finger_id", "label": "Fingerprint ID:", "type": "integer", "default": 1, "required": true, "description": "The registered fingerprint ID (1-10)"}
+      ]
+    },
+  
+    {
+      "display_name": "Wait Seconds",
+      "action_id": "wait_seconds",
+      "module": "actions.common_actions",
+      "description": "Pauses execution for a fixed duration.",
+      "params": [
+        {"name": "seconds", "label": "Seconds:", "type": "float", "required": true}
+      ]
+    },
+    {
+      "display_name": "Wait For Element",
+      "action_id": "wait_for_element",
+      "module": "actions.common_actions",
+      "description": "Waits for an element to be present or visible.",
+      "params": [
+        {"name": "selector_type", "label": "Select By:", "type": "choice", "options": ["ACCESSIBILITY_ID", "ID", "XPATH", "CLASS_NAME", "TEXT", "UIAUTOMATOR"], "required": true},
+        {"name": "selector_value", "label": "Selector Value:", "type": "string", "required": true},
+        {"name": "timeout", "label": "Timeout (s):", "type": "integer", "default": 10, "required": false},
+        {"name": "visible", "label": "Wait for Visible?", "type": "boolean", "default": true, "required": false, "description": "False waits only for presence in DOM"}
+      ]
+    },
+    {
+      "display_name": "Wait For Element To Disappear",
+      "action_id": "wait_for_element_to_disappear",
+      "module": "actions.common_actions",
+      "description": "Waits for an element to become invisible or not present.",
+      "params": [
+        {"name": "selector_type", "label": "Select By:", "type": "choice", "options": ["ACCESSIBILITY_ID", "ID", "XPATH", "CLASS_NAME", "TEXT", "UIAUTOMATOR"], "required": true},
+        {"name": "selector_value", "label": "Selector Value:", "type": "string", "required": true},
+        {"name": "timeout", "label": "Timeout (s):", "type": "integer", "default": 10, "required": false}
+      ]
+    },
+  
+    {
+      "display_name": "Verify Element Visible",
+      "action_id": "verify_element_visible",
+      "module": "actions.common_actions",
+      "description": "Checks if an element is currently visible on screen.",
+      "params": [
+        {"name": "selector_type", "label": "Select By:", "type": "choice", "options": ["ACCESSIBILITY_ID", "ID", "XPATH", "CLASS_NAME", "TEXT", "UIAUTOMATOR"], "required": true},
+        {"name": "selector_value", "label": "Selector Value:", "type": "string", "required": true},
+        {"name": "fail_test_if_not", "label": "Fail Test if Not Visible?", "type": "boolean", "default": true, "required": false}
+      ],
+      "returns": "boolean (True if visible, False otherwise)"
+    },
+    {
+      "display_name": "Verify Element Has Text",
+      "action_id": "verify_element_text",
+      "module": "actions.common_actions",
+      "description": "Checks if an element's text matches expected value (exact or contains).",
+      "params": [
+        {"name": "selector_type", "label": "Select By:", "type": "choice", "options": ["ACCESSIBILITY_ID", "ID", "XPATH", "CLASS_NAME", "TEXT", "UIAUTOMATOR"], "required": true},
+        {"name": "selector_value", "label": "Selector Value:", "type": "string", "required": true},
+        {"name": "expected_text", "label": "Expected Text:", "type": "string", "required": true},
+        {"name": "match_type", "label": "Match Type:", "type": "choice", "options": ["EXACT", "CONTAINS"], "default": "EXACT", "required": false},
+        {"name": "fail_test_if_not", "label": "Fail Test if No Match?", "type": "boolean", "default": true, "required": false}
+      ],
+      "returns": "boolean (True if matches, False otherwise)"
+    },
+     {
+      "display_name": "Verify Element Attribute",
+      "action_id": "verify_element_attribute",
+      "module": "actions.common_actions",
+      "description": "Checks if an element's attribute matches expected value.",
+      "params": [
+        {"name": "selector_type", "label": "Select By:", "type": "choice", "options": ["ACCESSIBILITY_ID", "ID", "XPATH", "CLASS_NAME", "TEXT", "UIAUTOMATOR"], "required": true},
+        {"name": "selector_value", "label": "Selector Value:", "type": "string", "required": true},
+        {"name": "attribute_name", "label": "Attribute Name:", "type": "string", "required": true, "description": "e.g., checked, selected, enabled, content-desc"},
+        {"name": "expected_value", "label": "Expected Value:", "type": "string", "required": true},
+        {"name": "fail_test_if_not", "label": "Fail Test if No Match?", "type": "boolean", "default": true, "required": false}
+      ],
+       "returns": "boolean (True if matches, False otherwise)"
+    },
+    {
+      "display_name": "Take Screenshot",
+      "action_id": "take_screenshot",
+      "module": "actions.common_actions",
+      "description": "Saves a screenshot.",
+      "params": [
+        {"name": "filename", "label": "Filename:", "type": "string", "required": true}
+      ]
+    },
+    {
+      "display_name": "Execute ADB Shell Command",
+      "action_id": "execute_adb_shell",
+      "module": "actions.common_actions",
+      "description": "Executes an arbitrary ADB shell command (Use with caution!).",
+      "params": [
+        {"name": "command", "label": "Command:", "type": "string", "required": true}
+      ],
+      "returns": "string (Command output)"
+    },
+      {
+      "display_name": "Get Page Source",
+      "action_id": "get_page_source",
+      "module": "actions.common_actions",
+      "description": "Retrieves the XML source of the current screen.",
+      "params": [],
+      "returns": "string (XML page source)"
+    }
+  
+  ]

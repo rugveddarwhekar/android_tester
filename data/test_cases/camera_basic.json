@@ -1,0 +1,52 @@
+{
+  "name": "camera_basic",
+  "description": "Test case created with GUI Tester",
+  "steps": [
+    {
+      "action": "launch_app_by_package",
+      "params": {
+        "package_name": "com.google.android.GoogleCamera",
+        "activity_name": "com.android.camera.CameraLauncher"
+      },
+      "notes": "",
+      "_display_name": "Launch App by Package"
+    },
+    {
+      "action": "wait_for_element",
+      "params": {
+        "selector_type": "ACCESSIBILITY_ID",
+        "selector_value": "Take photo",
+        "timeout": 10,
+        "visible": true
+      },
+      "notes": "",
+      "_display_name": "Wait for Element"
+    },
+    {
+      "action": "click_element",
+      "params": {
+        "selector_type": "ACCESSIBILITY_ID",
+        "selector_value": "Take photo",
+        "timeout": 10
+      },
+      "notes": "",
+      "_display_name": "Click Element"
+    },
+    {
+      "action": "take_screenshot",
+      "params": {
+        "filename": "appium_screenshot"
+      },
+      "notes": "",
+      "_display_name": "Take Screenshot"
+    },
+    {
+      "action": "press_android_key",
+      "params": {
+        "key_code_name": "HOME"
+      },
+      "notes": "",
+      "_display_name": "Press Android Key"
+    }
+  ]
+}
