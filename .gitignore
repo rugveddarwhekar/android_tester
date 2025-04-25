@@ -1,0 +1,20 @@
+# Python bytecode and cache
+__pycache__/
+*.py[cod]
+
+# Configuration overrides or sensitive info (if any later)
+# config/local_*.json
+
+# Generated reports
+reports/
+*.log
+*.png
+*.mp4
+*.xml # Page source dumps
+
+# Saved data backups (optional)
+# data/test_cases/*.bak
+
+# Virtual environment folder
+venv/
+*venv/

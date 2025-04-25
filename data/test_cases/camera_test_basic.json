@@ -1,0 +1,54 @@
+{
+    "name": "Camera - Take Basic Photo",
+    "description": "Launches camera, waits for shutter, clicks shutter, waits, saves screenshot.",
+    "steps": [
+      {
+        "action": "launch_app_by_package",
+        "params": {
+          "package_name": "com.google.android.GoogleCamera",
+          "activity_name": "com.android.camera.CameraLauncher"
+        },
+        "notes": "Launch the default camera (replace package/activity if needed)"
+      },
+      {
+        "action": "wait_for_element",
+        "params": {
+           "selector_type": "ACCESSIBILITY_ID",
+           "selector_value": "Take photo",
+           "timeout": 15,
+           "visible": true
+        },
+        "notes": "Wait for shutter button to be visible (replace selector if needed)"
+      },
+      {
+        "action": "click_element",
+        "params": {
+          "selector_type": "ACCESSIBILITY_ID",
+          "selector_value": "Take photo"
+        },
+         "notes": "Click the shutter button (replace selector if needed)"
+      },
+      {
+         "action": "wait_seconds",
+         "params": { "seconds": 3 },
+         "notes": "Wait for photo processing/saving"
+      },
+      {
+        "action": "take_screenshot",
+        "params": {
+          "filename": "camera_basic_photo_result.png"
+        },
+        "notes": "Save result screenshot"
+      },
+      {
+          "action": "press_android_key",
+          "params": { "key_code_name": "BACK" },
+          "notes": "Press back button"
+      },
+      {
+          "action": "press_android_key",
+          "params": { "key_code_name": "HOME" },
+          "notes": "Press home button"
+      }
+    ]
+  }
