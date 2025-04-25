@@ -2,6 +2,8 @@
 
 A powerful desktop application for creating and running automated tests for Android applications. Built with Python and Tkinter, this tool provides a user-friendly interface for test case creation and execution.
 
+![Android GUI Tester Screenshot](docs/images/android_gui_tester_1.png)
+
 ## Features
 
 - **Visual Test Case Builder**: Create test sequences through an intuitive drag-and-drop interface
