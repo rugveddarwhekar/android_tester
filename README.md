@@ -71,38 +71,7 @@ sequenceDiagram
     GUI->>User: Display Results
 ```
 
-## 🎯 Key Features & Capabilities
 
-```mermaid
-mindmap
-  root((Android GUI Tester))
-    User Experience
-      Modern Pastel UI
-      Interactive Help System
-      Real-time Status Updates
-      Drag & Drop Test Building
-    Testing Capabilities
-      100+ Pre-built Actions
-      Element Interaction
-      Gesture Support
-      Screenshot Capture
-      Performance Monitoring
-    Device Management
-      ADB Integration
-      Package Discovery
-      Device Status Monitoring
-      Multi-device Ready
-    Test Management
-      Save/Load Test Cases
-      Parameter Configuration
-      Test Validation
-      Result Logging
-    Technical Features
-      Thread-safe Execution
-      Error Handling
-      Extensible Architecture
-      Cross-platform Support
-```
 
 ## 📊 Technology Stack
 
@@ -141,78 +110,11 @@ graph LR
     PYTHON --> LOGGING
 ```
 
-## 🚀 Development & Deployment Pipeline
 
-```mermaid
-graph TD
-    A[Local Development] --> B[Code Review]
-    B --> C[Testing]
-    C --> D[Documentation]
-    D --> E[Git Commit]
-    E --> F[Push to GitHub]
-    F --> G[Issue Tracking]
-    G --> H[Feature Planning]
-    H --> A
-    
-    subgraph "Quality Assurance"
-        C1[Unit Tests]
-        C2[Integration Tests]
-        C3[UI Testing]
-        C4[Device Testing]
-    end
-    
-    C --> C1
-    C --> C2
-    C --> C3
-    C --> C4
-```
 
-## 📈 Project Metrics & Impact
 
-```mermaid
-pie title Lines of Code Distribution
-    "GUI Components" : 800
-    "Test Actions" : 1200
-    "Core Logic" : 600
-    "Configuration" : 200
-    "Documentation" : 400
-    "Utilities" : 300
-```
 
-## 🎨 UI/UX Design Philosophy
 
-```mermaid
-graph TB
-    subgraph "Design Principles"
-        MINIMAL[Minimalist Design]
-        ACCESSIBLE[Accessibility First]
-        RESPONSIVE[Responsive Layout]
-        INTUITIVE[Intuitive Navigation]
-    end
-    
-    subgraph "Color Palette"
-        PASTEL[Pastel Colors]
-        SOFT[Soft Contrasts]
-        EYE_FRIENDLY[Eye-friendly]
-        PROFESSIONAL[Professional Look]
-    end
-    
-    subgraph "User Experience"
-        HOVER[Hover Effects]
-        TOOLTIPS[Contextual Help]
-        STATUS[Real-time Status]
-        FEEDBACK[Visual Feedback]
-    end
-    
-    MINIMAL --> PASTEL
-    ACCESSIBLE --> SOFT
-    RESPONSIVE --> EYE_FRIENDLY
-    INTUITIVE --> PROFESSIONAL
-    PASTEL --> HOVER
-    SOFT --> TOOLTIPS
-    EYE_FRIENDLY --> STATUS
-    PROFESSIONAL --> FEEDBACK
-```
 
 ## Main Features
 
