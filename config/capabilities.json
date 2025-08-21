@@ -1,7 +1,7 @@
 {
     "platformName": "Android",
     "appium:automationName": "UiAutomator2",
-    "appium:deviceName": "YOUR_DEVICE_ID",
+    "appium:deviceName": "GOOGLE000000498",
     "appium:appPackage": null,
     "appium:appActivity": null,
     "appium:noReset": true,

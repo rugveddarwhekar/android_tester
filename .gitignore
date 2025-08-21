@@ -36,6 +36,7 @@ reports/
 # Virtual environment folder
 venv/
 ENV/
+.venv/
 
 # IDE
 .idea/
@@ -62,3 +63,6 @@ config/capabilities.json
 # Device specific
 *.device
 device_info.json
+config/capabilities.json
+.DS_Store
+config/capabilities.json
