@@ -4,10 +4,10 @@
       "display_name": "Launch/Switch App by Package",
       "action_id": "launch_app_by_package",
       "module": "actions.common_actions",
-      "description": "Launches app or brings it to foreground using package name.",
+      "description": "Launches an app or brings it to the foreground using its package name. Use this to start apps or switch between running apps.",
       "params": [
-        {"name": "package_name", "label": "Package:", "type": "string", "required": true},
-        {"name": "activity_name", "label": "Activity (Optional):", "type": "string", "required": false, "description": "Usually not needed for launch/switch"}
+        {"name": "package_name", "label": "Package Name:", "type": "string", "required": true, "description": "The app's package name (e.g., com.example.myapp). Use the dropdown to see installed apps, or find it in Android Studio or app settings."},
+        {"name": "activity_name", "label": "Activity (Optional):", "type": "string", "required": false, "description": "Specific activity to launch (e.g., com.example.myapp.MainActivity). Usually not needed - the app will launch its main activity."}
       ]
     },
     {
@@ -51,11 +51,11 @@
       "display_name": "Click Element",
       "action_id": "click_element",
       "module": "actions.common_actions",
-      "description": "Clicks a UI element.",
+      "description": "Clicks on a UI element (button, link, etc.) on the screen. This is the most common action for interacting with apps.",
       "params": [
-        {"name": "selector_type", "label": "Select By:", "type": "choice", "options": ["ACCESSIBILITY_ID", "ID", "XPATH", "CLASS_NAME", "TEXT", "UIAUTOMATOR"], "required": true},
-        {"name": "selector_value", "label": "Selector Value:", "type": "string", "required": true},
-        {"name": "timeout", "label": "Timeout (s):", "type": "integer", "default": 10, "required": false}
+        {"name": "selector_type", "label": "Select By:", "type": "choice", "options": ["ACCESSIBILITY_ID", "ID", "XPATH", "CLASS_NAME", "TEXT", "UIAUTOMATOR"], "required": true, "description": "How to find the element: ACCESSIBILITY_ID (best for accessibility), ID (resource ID), XPATH (XML path), CLASS_NAME (element type), TEXT (visible text), UIAUTOMATOR (Android UI Automator)"},
+        {"name": "selector_value", "label": "Selector Value:", "type": "string", "required": true, "description": "The value to search for. For TEXT, use the exact text shown on screen. For ID, use the resource ID. For ACCESSIBILITY_ID, use the content description."},
+        {"name": "timeout", "label": "Timeout (s):", "type": "integer", "default": 10, "required": false, "description": "How long to wait for the element to appear before failing (in seconds)"}
       ]
     },
     {
@@ -74,13 +74,13 @@
       "display_name": "Input Text",
       "action_id": "input_text",
       "module": "actions.common_actions",
-      "description": "Inputs text into an element (clears first by default).",
+      "description": "Types text into a text field, input box, or search bar. Useful for entering usernames, passwords, search terms, etc.",
       "params": [
-        {"name": "selector_type", "label": "Select By:", "type": "choice", "options": ["ACCESSIBILITY_ID", "ID", "XPATH", "CLASS_NAME", "UIAUTOMATOR"], "required": true},
-        {"name": "selector_value", "label": "Selector Value:", "type": "string", "required": true},
-        {"name": "text_to_input", "label": "Text:", "type": "string", "required": true},
-        {"name": "clear_first", "label": "Clear Before Input?", "type": "boolean", "default": true, "required": false},
-        {"name": "timeout", "label": "Find Timeout (s):", "type": "integer", "default": 10, "required": false}
+        {"name": "selector_type", "label": "Select By:", "type": "choice", "options": ["ACCESSIBILITY_ID", "ID", "XPATH", "CLASS_NAME", "UIAUTOMATOR"], "required": true, "description": "How to find the text input element: ACCESSIBILITY_ID (best), ID (resource ID), XPATH (XML path), CLASS_NAME (element type), UIAUTOMATOR (Android UI Automator)"},
+        {"name": "selector_value", "label": "Selector Value:", "type": "string", "required": true, "description": "The value to find the text input. For ID, use the resource ID. For ACCESSIBILITY_ID, use the content description or hint text."},
+        {"name": "text_to_input", "label": "Text to Type:", "type": "string", "required": true, "description": "The text you want to type into the field (e.g., username, password, search term)"},
+        {"name": "clear_first", "label": "Clear Before Input?", "type": "boolean", "default": true, "required": false, "description": "Whether to clear any existing text in the field before typing new text"},
+        {"name": "timeout", "label": "Find Timeout (s):", "type": "integer", "default": 10, "required": false, "description": "How long to wait for the text input to appear before failing (in seconds)"}
       ]
     },
     {
@@ -124,11 +124,11 @@
       "display_name": "Swipe Screen",
       "action_id": "swipe_screen",
       "module": "actions.common_actions",
-      "description": "Swipes the screen (Up, Down, Left, Right) - uses percentages.",
+      "description": "Swipes or scrolls the screen in any direction. Useful for navigation, scrolling lists, or revealing hidden content.",
       "params": [
-        {"name": "direction", "label": "Direction:", "type": "choice", "options": ["UP", "DOWN", "LEFT", "RIGHT"], "required": true},
-        {"name": "percent", "label": "Swipe %:", "type": "integer", "default": 75, "required": false, "description": "Percentage of screen dimension to swipe"},
-        {"name": "duration_ms", "label": "Duration (ms):", "type": "integer", "default": 400, "required": false}
+        {"name": "direction", "label": "Direction:", "type": "choice", "options": ["UP", "DOWN", "LEFT", "RIGHT"], "required": true, "description": "Which direction to swipe: UP (scroll down), DOWN (scroll up), LEFT (scroll right), RIGHT (scroll left)"},
+        {"name": "percent", "label": "Swipe %:", "type": "integer", "default": 75, "required": false, "description": "How far to swipe as percentage of screen size. 75% = swipe 3/4 of the screen. Higher values = longer swipes"},
+        {"name": "duration_ms", "label": "Duration (ms):", "type": "integer", "default": 400, "required": false, "description": "How long the swipe gesture takes (in milliseconds). Higher values = slower, more deliberate swipes"}
       ]
     },
     {
@@ -255,12 +255,12 @@
       "display_name": "Wait For Element",
       "action_id": "wait_for_element",
       "module": "actions.common_actions",
-      "description": "Waits for an element to be present or visible.",
+      "description": "Waits for an element to appear on screen before continuing. Essential for dynamic content that loads after page changes.",
       "params": [
-        {"name": "selector_type", "label": "Select By:", "type": "choice", "options": ["ACCESSIBILITY_ID", "ID", "XPATH", "CLASS_NAME", "TEXT", "UIAUTOMATOR"], "required": true},
-        {"name": "selector_value", "label": "Selector Value:", "type": "string", "required": true},
-        {"name": "timeout", "label": "Timeout (s):", "type": "integer", "default": 10, "required": false},
-        {"name": "visible", "label": "Wait for Visible?", "type": "boolean", "default": true, "required": false, "description": "False waits only for presence in DOM"}
+        {"name": "selector_type", "label": "Select By:", "type": "choice", "options": ["ACCESSIBILITY_ID", "ID", "XPATH", "CLASS_NAME", "TEXT", "UIAUTOMATOR"], "required": true, "description": "How to find the element: ACCESSIBILITY_ID (best), ID (resource ID), XPATH (XML path), CLASS_NAME (element type), TEXT (visible text), UIAUTOMATOR (Android UI Automator)"},
+        {"name": "selector_value", "label": "Selector Value:", "type": "string", "required": true, "description": "The value to search for. For TEXT, use the exact text shown on screen. For ID, use the resource ID. For ACCESSIBILITY_ID, use the content description."},
+        {"name": "timeout", "label": "Timeout (s):", "type": "integer", "default": 10, "required": false, "description": "How long to wait for the element to appear before failing (in seconds). Increase for slow-loading content."},
+        {"name": "visible", "label": "Wait for Visible?", "type": "boolean", "default": true, "required": false, "description": "True: Wait for element to be visible on screen. False: Wait only for element to exist in the page (may be hidden)"}
       ]
     },
     {

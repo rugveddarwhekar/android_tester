@@ -21,31 +21,60 @@ A simple desktop tool I built for running automated tests on Android devices. It
 
 ## Quick Start
 
-1. Get the code:
+1. **Get the code:**
 ```bash
 git clone https://github.com/rugveddarwhekar/android_tester.git
 cd android_tester
 ```
 
-2. Install requirements:
+2. **Install requirements:**
 ```bash
 pip install -r requirements.txt
 ```
 
-3. Run the app:
+3. **Run the setup script** (recommended for first-time users):
 ```bash
-python main.py
+python3 setup.py
+```
+
+4. **Configure your environment:**
+   - Connect your Android device via USB
+   - Enable USB Debugging in Developer Options
+   - Start Appium Server: `appium`
+   - Run setup script again to verify everything is working
+
+5. **Launch the GUI:**
+```bash
+python3 main.py
 ```
 
 ## Basic Usage
 
-1. Connect your Android device
-2. Create a test case:
-   - Add actions from the list
-   - Set their parameters
-   - Arrange the sequence
-3. Save your test case
-4. Run it and see the results
+1. **Connect your Android device** and enable USB debugging
+2. **Start Appium Server** (default: http://localhost:4723)
+3. **Launch the GUI** by running `python3 main.py`
+4. **Create a test case**:
+   - Select actions from the left panel
+   - Configure parameters using the right panel
+   - Arrange the sequence using the center panel
+5. **Save your test case** for later use
+6. **Run the test** and view results
+
+### New User-Friendly Features
+
+- **Interactive Help**: Hover over actions and parameters for detailed explanations
+- **Help Button**: Comprehensive help dialog with getting started guide, selector explanations, and troubleshooting tips
+- **Welcome Message**: Helpful introduction for new users
+- **Visual Guidance**: Clear instructions in each panel
+- **Enhanced Descriptions**: Detailed explanations for Android-specific terms and concepts
+
+### Quick Tips for New Users
+
+- Start with simple actions like "Click Element" and "Input Text"
+- Use the "Help" button for detailed guidance
+- Hover over any field to see helpful hints
+- Use TEXT selectors for visible elements (easiest to start with)
+- Add "Wait For Element" steps before clicking elements that might not be immediately visible
 
 ## Project Structure
 
@@ -94,6 +123,53 @@ I'm working on:
 - Better test reporting
 - Basic multi-device support
 
-## Getting Help
+## Troubleshooting
+
+### Common Issues
+
+#### "Driver initialization failed"
+This is the most common error. Here's how to fix it:
+
+1. **Check device connection:**
+   ```bash
+   adb devices
+   ```
+   You should see your device listed as "device" (not "unauthorized")
+
+2. **Verify Appium server:**
+   ```bash
+   appium
+   ```
+   Start Appium server in a separate terminal
+
+3. **Check capabilities configuration:**
+   - Edit `config/capabilities.json`
+   - Set `appium:deviceName` to your device ID
+   - Verify other settings are correct
+
+4. **Run the setup script:**
+   ```bash
+   python3 setup.py
+   ```
+   This will diagnose and help fix common issues
+
+#### "ADB not found"
+Install Android SDK platform-tools and add to PATH:
+- **macOS/Linux:** `export PATH=$PATH:$ANDROID_HOME/platform-tools`
+- **Windows:** Add `%ANDROID_HOME%\platform-tools` to PATH
+
+#### "Cannot connect to Appium server"
+Start Appium server:
+```bash
+npm install -g appium
+appium
+```
+
+#### "No devices found"
+- Connect device via USB
+- Enable USB Debugging in Developer Options
+- Authorize USB debugging on device when prompted
+
+### Getting Help
 
 Found an issue or have a question? [Open an issue](https://github.com/rugveddarwhekar/android_tester/issues) and I'll take a look. 
