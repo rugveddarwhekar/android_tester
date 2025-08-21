@@ -60,6 +60,9 @@ config/capabilities.json
 .env.*
 !.env.example
 
+# Release notes (draft files)
+RELEASE_*.md
+
 # Device specific
 *.device
 device_info.json
