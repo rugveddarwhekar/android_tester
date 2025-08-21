@@ -6,7 +6,7 @@ import os
 project_root = os.path.dirname(__file__)
 sys.path.insert(0, project_root)
 
-from gui.main_window import App
+from gui.modern_window import App
 
 def launch_gui():
     """Initialize and run the main application window"""

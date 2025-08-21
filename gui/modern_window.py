@@ -1,4 +1,4 @@
-# gui/main_window.py
+# gui/modern_window.py
 import tkinter as tk
 from tkinter import ttk, messagebox, filedialog, simpledialog
 import json
@@ -8,6 +8,7 @@ import sys
 import time
 import subprocess
 import shlex
+from typing import Dict, List, Any
 
 project_root = os.path.normpath(os.path.join(os.path.dirname(__file__), '..'))
 if project_root not in sys.path:
@@ -16,7 +17,24 @@ if project_root not in sys.path:
 ACTION_LIB_PATH = os.path.join(project_root, "data", "action_library.json")
 TEST_CASE_DIR = os.path.join(project_root, "data", "test_cases")
 
+# Pastel color palette
+COLORS = {
+    'primary': '#E8F4FD',      # Soft blue
+    'secondary': '#F0F8FF',    # Alice blue
+    'accent': '#B8E6B8',       # Soft green
+    'accent_hover': '#A8D8A8', # Darker green
+    'text': '#2C3E50',         # Dark blue-gray
+    'text_light': '#7F8C8D',   # Light gray
+    'border': '#D5DBDB',       # Light gray border
+    'success': '#D5F4E6',      # Soft mint
+    'warning': '#FDEBD0',      # Soft orange
+    'error': '#FADBD8',        # Soft red
+    'white': '#FFFFFF',
+    'shadow': '#E8E8E8'
+}
+
 def get_installed_packages():
+    """Get list of installed packages from Android device"""
     packages = []
     adb_command = "adb shell pm list packages"
     
@@ -45,27 +63,145 @@ def get_installed_packages():
 
     return packages
 
+class ModernButton(tk.Button):
+    """Custom button with modern styling"""
+    def __init__(self, parent, **kwargs):
+        super().__init__(parent, **kwargs)
+        self.configure(
+            relief="flat",
+            borderwidth=0,
+            font=("Segoe UI", 9),
+            cursor="hand2",
+            bg=COLORS['accent'],
+            fg=COLORS['text'],
+            activebackground=COLORS['accent_hover'],
+            activeforeground=COLORS['text'],
+            padx=12,
+            pady=6
+        )
+        self.bind("<Enter>", self._on_enter)
+        self.bind("<Leave>", self._on_leave)
+    
+    def _on_enter(self, event):
+        self.configure(bg=COLORS['accent_hover'])
+    
+    def _on_leave(self, event):
+        self.configure(bg=COLORS['accent'])
+
+class ModernFrame(tk.Frame):
+    """Custom frame with modern styling"""
+    def __init__(self, parent, **kwargs):
+        super().__init__(parent, **kwargs)
+        self.configure(
+            bg=COLORS['white'],
+            relief="flat",
+            borderwidth=1,
+            highlightbackground=COLORS['border'],
+            highlightthickness=1
+        )
+
+class ModernListbox(tk.Listbox):
+    """Custom listbox with modern styling"""
+    def __init__(self, parent, **kwargs):
+        super().__init__(parent, **kwargs)
+        self.configure(
+            relief="flat",
+            borderwidth=1,
+            font=("Segoe UI", 9),
+            bg=COLORS['white'],
+            fg=COLORS['text'],
+            selectbackground=COLORS['accent'],
+            selectforeground=COLORS['text'],
+            highlightbackground=COLORS['border'],
+            highlightthickness=1,
+            activestyle="none"
+        )
+
+class ModernEntry(tk.Entry):
+    """Custom entry with modern styling"""
+    def __init__(self, parent, **kwargs):
+        super().__init__(parent, **kwargs)
+        self.configure(
+            relief="flat",
+            borderwidth=1,
+            font=("Segoe UI", 9),
+            bg=COLORS['white'],
+            fg=COLORS['text'],
+            insertbackground=COLORS['text'],
+            highlightbackground=COLORS['border'],
+            highlightthickness=1,
+            highlightcolor=COLORS['accent']
+        )
+
 class App(tk.Tk):
+    """Modern Android GUI Tester Application"""
+    
     def __init__(self):
         super().__init__()
-
+        
+        # Configure main window
         self.title("Android GUI Tester")
-        self.geometry("1000x700")
-
+        self.geometry("1200x800")
+        self.configure(bg=COLORS['primary'])
+        
+        # Set minimum window size
+        self.minsize(1000, 600)
+        
+        # Initialize data
         self.available_actions = self.load_action_library()
         self.current_test_sequence = []
         self.param_widgets = {}
-
-        self.main_frame = ttk.Frame(self, padding="10")
-        self.main_frame.pack(fill=tk.BOTH, expand=True)
-        self.main_frame.grid_rowconfigure(0, weight=1)
-        self.main_frame.grid_columnconfigure(1, weight=3)
-        self.main_frame.grid_columnconfigure(2, weight=2)
-
+        
+        # Setup modern styling
+        self.setup_styles()
+        
+        # Create main layout
+        self.create_layout()
+        
+        # Initialize components
         self.setup_action_library()
         self.setup_test_sequence()
         self.setup_parameter_editor()
         self.setup_controls()
+        
+        # Show welcome message
+        self.show_welcome_message()
+
+    def setup_styles(self):
+        """Configure modern ttk styles"""
+        style = ttk.Style()
+        
+        # Configure common styles
+        style.configure('Modern.TFrame', background=COLORS['white'])
+        style.configure('Modern.TLabel', 
+                       background=COLORS['white'], 
+                       foreground=COLORS['text'],
+                       font=("Segoe UI", 9))
+        style.configure('Modern.TButton',
+                       background=COLORS['accent'],
+                       foreground=COLORS['text'],
+                       font=("Segoe UI", 9),
+                       relief="flat",
+                       borderwidth=0)
+        style.configure('Modern.TLabelframe',
+                       background=COLORS['white'],
+                       foreground=COLORS['text'],
+                       font=("Segoe UI", 10, "bold"))
+        style.configure('Modern.TLabelframe.Label',
+                       background=COLORS['white'],
+                       foreground=COLORS['text'],
+                       font=("Segoe UI", 10, "bold"))
+
+    def create_layout(self):
+        """Create the main application layout"""
+        # Main container
+        self.main_container = ModernFrame(self)
+        self.main_container.pack(fill=tk.BOTH, expand=True, padx=20, pady=20)
+        
+        # Configure grid weights
+        self.main_container.grid_rowconfigure(0, weight=1)
+        self.main_container.grid_columnconfigure(1, weight=3)
+        self.main_container.grid_columnconfigure(2, weight=2)
 
     def load_action_library(self):
         """Load and sort action definitions from JSON file"""
@@ -77,6 +213,186 @@ class App(tk.Tk):
         except Exception as e:
             messagebox.showerror("Error", f"Failed to load action library:\n{e}")
             return []
+
+    def setup_action_library(self):
+        """Initialize the action library panel"""
+        # Create frame
+        self.action_lib_frame = ttk.LabelFrame(
+            self.main_container, 
+            text="Action Library", 
+            padding="15",
+            style='Modern.TLabelframe'
+        )
+        self.action_lib_frame.grid(row=0, column=0, padx=(0, 10), pady=(0, 10), sticky="nsew")
+        self.action_lib_frame.rowconfigure(1, weight=1)
+        self.action_lib_frame.columnconfigure(0, weight=1)
+
+        # Help text
+        help_text = "Select an action from the list below, then click 'Add Action' to add it to your test sequence."
+        help_label = ttk.Label(
+            self.action_lib_frame, 
+            text=help_text, 
+            foreground=COLORS['text_light'], 
+            wraplength=250,
+            style='Modern.TLabel'
+        )
+        help_label.grid(row=0, column=0, pady=(0, 10), sticky="ew")
+
+        # Action listbox
+        self.action_listbox = ModernListbox(self.action_lib_frame, height=20)
+        self.action_listbox.grid(row=1, column=0, sticky="nsew", padx=(0, 5))
+        self.action_listbox.bind("<Enter>", lambda e: self.status_var.set("Hover over an action to see its description"))
+        self.action_listbox.bind("<Leave>", lambda e: self.status_var.set("Ready"))
+        self.action_listbox.bind("<Motion>", self.on_action_hover)
+
+        # Scrollbar
+        action_scrollbar = ttk.Scrollbar(self.action_lib_frame, orient="vertical", command=self.action_listbox.yview)
+        action_scrollbar.grid(row=1, column=1, sticky="ns")
+        self.action_listbox.configure(yscrollcommand=action_scrollbar.set)
+
+        # Add button
+        add_button = ModernButton(
+            self.action_lib_frame, 
+            text="➕ Add Action", 
+            command=self.add_action_to_sequence
+        )
+        add_button.grid(row=2, column=0, columnspan=2, pady=(10, 0), sticky="ew")
+
+        # Populate actions
+        self.populate_action_list()
+
+    def setup_test_sequence(self):
+        """Initialize the test sequence panel"""
+        # Create frame
+        self.sequence_frame = ttk.LabelFrame(
+            self.main_container, 
+            text="Test Case Sequence", 
+            padding="15",
+            style='Modern.TLabelframe'
+        )
+        self.sequence_frame.grid(row=0, column=1, padx=5, pady=(0, 10), sticky="nsew")
+        self.sequence_frame.rowconfigure(1, weight=1)
+        self.sequence_frame.columnconfigure(0, weight=1)
+
+        # Help text
+        help_text = "Your test steps will appear here. Select a step to configure its parameters on the right."
+        help_label = ttk.Label(
+            self.sequence_frame, 
+            text=help_text, 
+            foreground=COLORS['text_light'], 
+            wraplength=350,
+            style='Modern.TLabel'
+        )
+        help_label.grid(row=0, column=0, columnspan=2, pady=(0, 10), sticky="ew")
+
+        # Sequence listbox
+        self.sequence_listbox = ModernListbox(self.sequence_frame, height=20)
+        self.sequence_listbox.grid(row=1, column=0, sticky="nsew", padx=(0, 5))
+        self.sequence_listbox.bind("<<ListboxSelect>>", self.on_sequence_select)
+
+        # Scrollbar
+        sequence_scrollbar = ttk.Scrollbar(self.sequence_frame, orient="vertical", command=self.sequence_listbox.yview)
+        sequence_scrollbar.grid(row=1, column=1, sticky="ns")
+        self.sequence_listbox.configure(yscrollcommand=sequence_scrollbar.set)
+
+        # Button frame
+        button_frame = ModernFrame(self.sequence_frame)
+        button_frame.grid(row=2, column=0, columnspan=2, pady=(10, 0), sticky="ew")
+        button_frame.configure(bg=COLORS['white'])
+
+        # Control buttons
+        move_up_btn = ModernButton(button_frame, text="⬆️ Move Up", command=self.move_step_up)
+        move_up_btn.pack(side="left", padx=(0, 5))
+
+        move_down_btn = ModernButton(button_frame, text="⬇️ Move Down", command=self.move_step_down)
+        move_down_btn.pack(side="left", padx=(0, 5))
+
+        remove_btn = ModernButton(button_frame, text="🗑️ Remove", command=self.remove_step)
+        remove_btn.pack(side="left", padx=(0, 5))
+
+        clear_btn = ModernButton(button_frame, text="🗑️ Clear All", command=self.clear_sequence)
+        clear_btn.pack(side="left")
+
+    def setup_parameter_editor(self):
+        """Initialize the parameter editor panel"""
+        # Create frame
+        self.param_frame = ttk.LabelFrame(
+            self.main_container, 
+            text="Step Parameters", 
+            padding="15",
+            style='Modern.TLabelframe'
+        )
+        self.param_frame.grid(row=0, column=2, padx=(10, 0), pady=(0, 10), sticky="nsew")
+        self.param_frame.rowconfigure(1, weight=1)
+        self.param_frame.columnconfigure(0, weight=1)
+
+        # Help text
+        help_text = "Configure parameters for the selected step. Hover over fields for help."
+        help_label = ttk.Label(
+            self.param_frame, 
+            text=help_text, 
+            foreground=COLORS['text_light'], 
+            wraplength=250,
+            style='Modern.TLabel'
+        )
+        help_label.grid(row=0, column=0, pady=(0, 10), sticky="ew")
+
+        # Canvas for scrolling
+        self.param_canvas = tk.Canvas(
+            self.param_frame, 
+            bg=COLORS['white'],
+            highlightthickness=0
+        )
+        self.param_canvas.grid(row=1, column=0, sticky="nsew", padx=(0, 5))
+
+        # Scrollbar
+        param_scrollbar = ttk.Scrollbar(self.param_frame, orient="vertical", command=self.param_canvas.yview)
+        param_scrollbar.grid(row=1, column=1, sticky="ns")
+        self.param_canvas.configure(yscrollcommand=param_scrollbar.set)
+
+        # Inner frame for parameters
+        self.param_inner_frame = ModernFrame(self.param_canvas)
+        self.param_canvas.create_window((0, 0), window=self.param_inner_frame, anchor="nw")
+
+        # Configure canvas scrolling
+        self.param_inner_frame.bind(
+            "<Configure>", 
+            lambda e: self.param_canvas.configure(scrollregion=self.param_canvas.bbox("all"))
+        )
+
+    def setup_controls(self):
+        """Initialize the control buttons and status bar"""
+        # Control frame
+        self.controls_frame = ModernFrame(self.main_container)
+        self.controls_frame.grid(row=1, column=0, columnspan=3, pady=(10, 0), sticky="ew")
+        self.controls_frame.configure(bg=COLORS['white'])
+
+        # Left side buttons
+        left_buttons = ModernFrame(self.controls_frame)
+        left_buttons.pack(side="left", fill="x", expand=True)
+        left_buttons.configure(bg=COLORS['white'])
+
+        self.help_button = ModernButton(left_buttons, text="❓ Help", command=self.show_help_dialog)
+        self.help_button.pack(side="left", padx=(0, 10))
+
+        save_btn = ModernButton(left_buttons, text="💾 Save Test", command=self.save_test_case)
+        save_btn.pack(side="left", padx=(0, 10))
+
+        load_btn = ModernButton(left_buttons, text="📂 Load Test", command=self.load_test_case)
+        load_btn.pack(side="left", padx=(0, 10))
+
+        run_btn = ModernButton(left_buttons, text="▶️ Run Test", command=self.run_test)
+        run_btn.pack(side="left", padx=(0, 10))
+
+        # Status bar
+        self.status_var = tk.StringVar(value="Ready")
+        status_label = ttk.Label(
+            self.controls_frame, 
+            textvariable=self.status_var, 
+            foreground=COLORS['text_light'],
+            style='Modern.TLabel'
+        )
+        status_label.pack(side="right", padx=(10, 0))
 
     def populate_action_list(self):
         """Populate the action listbox with available actions"""
@@ -141,10 +457,19 @@ class App(tk.Tk):
         self.clear_param_editor()
 
         if not action_def:
-            ttk.Label(self.param_inner_frame, text=f"Action definition not found for '{step_data.get('action', 'N/A')}'").pack()
+            ttk.Label(
+                self.param_inner_frame, 
+                text=f"Action definition not found for '{step_data.get('action', 'N/A')}'",
+                style='Modern.TLabel'
+            ).pack()
             return
+            
         if not action_def.get('params'):
-            ttk.Label(self.param_inner_frame, text="No parameters for this action.").pack()
+            ttk.Label(
+                self.param_inner_frame, 
+                text="No parameters for this action.",
+                style='Modern.TLabel'
+            ).pack()
             return
 
         self.param_widgets = {}
@@ -155,10 +480,13 @@ class App(tk.Tk):
             current_value = step_data['params'].get(param_name, param_def.get('default', ''))
             param_desc = param_def.get('description')
 
-            frame = ttk.Frame(self.param_inner_frame)
-            frame.pack(fill=tk.X, pady=3, padx=5)
+            # Parameter frame
+            frame = ModernFrame(self.param_inner_frame)
+            frame.pack(fill=tk.X, pady=8, padx=10)
+            frame.configure(bg=COLORS['white'])
 
-            lbl = ttk.Label(frame, text=label_text, width=20, anchor=tk.W)
+            # Label
+            lbl = ttk.Label(frame, text=label_text, width=20, anchor=tk.W, style='Modern.TLabel')
             lbl.pack(side=tk.LEFT, padx=5)
 
             param_type = param_def.get('type', 'string')
@@ -172,7 +500,13 @@ class App(tk.Tk):
                 package_list = get_installed_packages()
 
                 try:
-                    widget = ttk.Combobox(frame, textvariable=var, values=package_list, state="normal" if package_list else "disabled", width=35)
+                    widget = ttk.Combobox(
+                        frame, 
+                        textvariable=var, 
+                        values=package_list, 
+                        state="normal" if package_list else "disabled", 
+                        width=35
+                    )
                     self.param_widgets[param_name] = {'widget': widget, 'var': var, 'type': 'package_choice'}
                 except Exception as e:
                     print(f"ERROR: Failed to create/update Combobox: {e}")
@@ -186,8 +520,10 @@ class App(tk.Tk):
 
             elif param_type == "string":
                 var = tk.StringVar(value=current_value)
-                widget = ttk.Entry(frame, textvariable=var, width=35)
+                widget = ModernEntry(frame, width=35)
+                widget.configure(textvariable=var)
                 self.param_widgets[param_name] = {'widget': widget, 'var': var, 'type': 'string'}
+                
             elif param_type == "integer":
                 try:
                     int_val = int(current_value)
@@ -196,6 +532,7 @@ class App(tk.Tk):
                 var = tk.IntVar(value=int_val)
                 widget = ttk.Spinbox(frame, from_=0, to=9999, textvariable=var, width=8)
                 self.param_widgets[param_name] = {'widget': widget, 'var': var, 'type': 'integer'}
+                
             elif param_type == "float":
                 try:
                     float_val = float(current_value)
@@ -204,20 +541,24 @@ class App(tk.Tk):
                 var = tk.DoubleVar(value=float_val)
                 widget = ttk.Spinbox(frame, from_=0.0, to=999.0, increment=0.1, textvariable=var, width=8)
                 self.param_widgets[param_name] = {'widget': widget, 'var': var, 'type': 'float'}
+                
             elif param_type == "boolean":
                 bool_val = str(current_value).lower() in ['true', '1', 'yes', 'on']
                 var = tk.BooleanVar(value=bool_val)
                 widget = ttk.Checkbutton(frame, variable=var, onvalue=True, offvalue=False)
                 self.param_widgets[param_name] = {'widget': widget, 'var': var, 'type': 'boolean'}
+                
             elif param_type == "choice":
                 options = param_def.get('options', [])
                 var = tk.StringVar(value=current_value)
                 widget = ttk.Combobox(frame, textvariable=var, values=options, state="readonly", width=33)
                 self.param_widgets[param_name] = {'widget': widget, 'var': var, 'type': 'choice'}
+                
             elif param_type == "filepath":
                 var = tk.StringVar(value=current_value)
-                entry_widget = ttk.Entry(frame, textvariable=var, width=25)
-                browse_button = ttk.Button(frame, text="Browse", command=lambda v=var: self.browse_file(v))
+                entry_widget = ModernEntry(frame, width=25)
+                entry_widget.configure(textvariable=var)
+                browse_button = ModernButton(frame, text="Browse", command=lambda v=var: self.browse_file(v))
                 entry_widget.pack(side=tk.LEFT, fill=tk.X, expand=True, padx=5)
                 browse_button.pack(side=tk.LEFT, padx=2)
                 self.param_widgets[param_name] = {'widget': entry_widget, 'var': var, 'type': 'filepath'}
@@ -227,10 +568,11 @@ class App(tk.Tk):
                 widget.pack(side=tk.LEFT, fill=tk.X, expand=True, padx=5)
                 
                 if param_desc:
-                    help_frame = ttk.Frame(frame)
+                    help_frame = ModernFrame(frame)
                     help_frame.pack(side=tk.RIGHT, padx=2)
+                    help_frame.configure(bg=COLORS['white'])
                     
-                    help_icon = ttk.Label(help_frame, text="?", foreground="blue", cursor="hand2")
+                    help_icon = ttk.Label(help_frame, text="❓", foreground=COLORS['accent'], cursor="hand2")
                     help_icon.pack()
                     
                     def enter(event, text=param_desc):
@@ -495,6 +837,7 @@ class App(tk.Tk):
         help_window.title("Android GUI Tester - Help")
         help_window.geometry("800x600")
         help_window.resizable(True, True)
+        help_window.configure(bg=COLORS['primary'])
         
         notebook = ttk.Notebook(help_window)
         notebook.pack(fill=tk.BOTH, expand=True, padx=10, pady=10)
@@ -665,112 +1008,6 @@ USEFUL COMMANDS:
         text_widget4.pack(fill=tk.BOTH, expand=True)
         text_widget4.insert(tk.END, troubleshooting_text)
         text_widget4.config(state=tk.DISABLED)
-
-    def setup_action_library(self):
-        """Initialize the action library panel"""
-        self.action_lib_frame = ttk.LabelFrame(self.main_frame, text="Action Library", padding="5")
-        self.action_lib_frame.grid(row=0, column=0, padx=(0, 5), pady=(0, 5), sticky="nsew")
-        self.action_lib_frame.rowconfigure(0, weight=1)
-        self.action_lib_frame.columnconfigure(0, weight=1)
-
-        help_text = "Select an action from the list below, then click 'Add Action' to add it to your test sequence."
-        help_label = ttk.Label(self.action_lib_frame, text=help_text, foreground="blue", wraplength=200)
-        help_label.grid(row=0, column=0, columnspan=2, pady=(0, 5), sticky="ew")
-
-        self.action_listbox = tk.Listbox(self.action_lib_frame, height=15)
-        self.action_listbox.grid(row=1, column=0, sticky="nsew", padx=(0, 5))
-        self.action_listbox.bind("<Enter>", lambda e: self.status_var.set("Hover over an action to see its description"))
-        self.action_listbox.bind("<Leave>", lambda e: self.status_var.set("Ready"))
-        self.action_listbox.bind("<Motion>", self.on_action_hover)
-
-        action_scrollbar = ttk.Scrollbar(self.action_lib_frame, orient="vertical", command=self.action_listbox.yview)
-        action_scrollbar.grid(row=1, column=1, sticky="ns")
-        self.action_listbox.configure(yscrollcommand=action_scrollbar.set)
-
-        add_button = ttk.Button(self.action_lib_frame, text="Add Action", command=self.add_action_to_sequence)
-        add_button.grid(row=2, column=0, columnspan=2, pady=(5, 0), sticky="ew")
-
-        self.populate_action_list()
-
-    def setup_test_sequence(self):
-        """Initialize the test sequence panel"""
-        self.sequence_frame = ttk.LabelFrame(self.main_frame, text="Test Case Sequence", padding="5")
-        self.sequence_frame.grid(row=0, column=1, padx=5, pady=(0, 5), sticky="nsew")
-        self.sequence_frame.rowconfigure(0, weight=1)
-        self.sequence_frame.columnconfigure(0, weight=1)
-
-        help_text = "Your test steps will appear here. Select a step to configure its parameters on the right."
-        help_label = ttk.Label(self.sequence_frame, text=help_text, foreground="blue", wraplength=300)
-        help_label.grid(row=0, column=0, columnspan=2, pady=(0, 5), sticky="ew")
-
-        self.sequence_listbox = tk.Listbox(self.sequence_frame, height=15)
-        self.sequence_listbox.grid(row=1, column=0, sticky="nsew", padx=(0, 5))
-        self.sequence_listbox.bind("<<ListboxSelect>>", self.on_sequence_select)
-
-        sequence_scrollbar = ttk.Scrollbar(self.sequence_frame, orient="vertical", command=self.sequence_listbox.yview)
-        sequence_scrollbar.grid(row=1, column=1, sticky="ns")
-        self.sequence_listbox.configure(yscrollcommand=sequence_scrollbar.set)
-
-        button_frame = ttk.Frame(self.sequence_frame)
-        button_frame.grid(row=2, column=0, columnspan=2, pady=(5, 0), sticky="ew")
-
-        move_up_btn = ttk.Button(button_frame, text="Move Up", command=self.move_step_up)
-        move_up_btn.pack(side="left", padx=(0, 5))
-
-        move_down_btn = ttk.Button(button_frame, text="Move Down", command=self.move_step_down)
-        move_down_btn.pack(side="left", padx=(0, 5))
-
-        remove_btn = ttk.Button(button_frame, text="Remove Step", command=self.remove_step)
-        remove_btn.pack(side="left", padx=(0, 5))
-
-        clear_btn = ttk.Button(button_frame, text="Clear All", command=self.clear_sequence)
-        clear_btn.pack(side="left")
-
-    def setup_parameter_editor(self):
-        """Initialize the parameter editor panel"""
-        self.param_frame = ttk.LabelFrame(self.main_frame, text="Step Parameters", padding="5")
-        self.param_frame.grid(row=0, column=2, padx=(5, 0), pady=(0, 5), sticky="nsew")
-        self.param_frame.rowconfigure(0, weight=1)
-        self.param_frame.columnconfigure(0, weight=1)
-
-        help_text = "Configure parameters for the selected step. Hover over fields for help."
-        help_label = ttk.Label(self.param_frame, text=help_text, foreground="blue", wraplength=200)
-        help_label.grid(row=0, column=0, pady=(0, 5), sticky="ew")
-
-        self.param_canvas = tk.Canvas(self.param_frame, bg="white")
-        self.param_canvas.grid(row=1, column=0, sticky="nsew", padx=(0, 5))
-
-        param_scrollbar = ttk.Scrollbar(self.param_frame, orient="vertical", command=self.param_canvas.yview)
-        param_scrollbar.grid(row=1, column=1, sticky="ns")
-        self.param_canvas.configure(yscrollcommand=param_scrollbar.set)
-
-        self.param_inner_frame = ttk.Frame(self.param_canvas)
-        self.param_canvas.create_window((0, 0), window=self.param_inner_frame, anchor="nw")
-
-        self.param_inner_frame.bind("<Configure>", lambda e: self.param_canvas.configure(scrollregion=self.param_canvas.bbox("all")))
-
-    def setup_controls(self):
-        """Initialize the control buttons"""
-        self.controls_frame = ttk.Frame(self.main_frame)
-        self.controls_frame.grid(row=1, column=0, columnspan=3, pady=(5, 0), sticky="ew")
-
-        self.help_button = ttk.Button(self.controls_frame, text="Help", command=self.show_help_dialog)
-        self.help_button.pack(side="left", padx=(0, 5))
-
-        save_btn = ttk.Button(self.controls_frame, text="Save Test Case", command=self.save_test_case)
-        save_btn.pack(side="left", padx=(0, 5))
-
-        load_btn = ttk.Button(self.controls_frame, text="Load Test Case", command=self.load_test_case)
-        load_btn.pack(side="left", padx=(0, 5))
-
-        run_btn = ttk.Button(self.controls_frame, text="Run Test", command=self.run_test)
-        run_btn.pack(side="left", padx=(0, 5))
-
-        self.status_var = tk.StringVar(value="Ready")
-        status_label = ttk.Label(self.controls_frame, textvariable=self.status_var, foreground="gray")
-        status_label.pack(side="right")
-
-        self.show_welcome_message()
 
     def show_welcome_message(self):
         """Show welcome message for new users"""
