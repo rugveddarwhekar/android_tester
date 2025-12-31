@@ -114,7 +114,8 @@ class ModernListbox(tk.Listbox):
             selectforeground=COLORS['text'],
             highlightbackground=COLORS['border'],
             highlightthickness=1,
-            activestyle="none"
+            activestyle="none",
+            exportselection=False
         )
 
 class ModernEntry(tk.Entry):

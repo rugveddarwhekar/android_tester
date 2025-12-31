@@ -201,11 +201,11 @@ def swipe_screen(driver, direction: str, percent: int = 75, duration_ms: int = 4
         height = screen_size['height']
         
         if direction.upper() == "UP":
-            start_x, start_y = width // 2, int(height * (1 - percent/100))
-            end_x, end_y = width // 2, int(height * (percent/100))
-        elif direction.upper() == "DOWN":
             start_x, start_y = width // 2, int(height * (percent/100))
             end_x, end_y = width // 2, int(height * (1 - percent/100))
+        elif direction.upper() == "DOWN":
+            start_x, start_y = width // 2, int(height * (1 - percent/100))
+            end_x, end_y = width // 2, int(height * (percent/100))
         elif direction.upper() == "LEFT":
             start_x, start_y = int(width * (1 - percent/100)), height // 2
             end_x, end_y = int(width * (percent/100)), height // 2
